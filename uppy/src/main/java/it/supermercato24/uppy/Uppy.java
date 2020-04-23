@@ -1,5 +1,6 @@
 package it.supermercato24.uppy;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 public class Uppy {
@@ -8,13 +9,19 @@ public class Uppy {
 
     private final String serverUrl;
 
+    private final OkHttpClient client;
     private final Retrofit retrofit;
     private final UppyService uppyService;
 
     private Uppy(String serverUrl) {
         this.serverUrl = serverUrl;
 
+        client = new OkHttpClient.Builder()
+                .addInterceptor(new UserAgentInterceptor())
+                .build();
+
         retrofit = new Retrofit.Builder()
+                .client(client)
                 .baseUrl(serverUrl)
                 .build();
 
