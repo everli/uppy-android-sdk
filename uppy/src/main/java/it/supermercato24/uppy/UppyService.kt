@@ -6,5 +6,8 @@ import retrofit2.http.GET
 
 interface UppyService {
     @GET("/v1/update-check")
-    fun checkLatestVersion(@Body currentVersion: String?, callback: Callback<Any?>?)
+    fun checkLatestVersion(
+        @Body currentVersion: String?,
+        callback: Callback<ApiResponse<UpdateCheck>>
+    )
 }
