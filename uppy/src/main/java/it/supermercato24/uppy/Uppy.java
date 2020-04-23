@@ -1,7 +1,6 @@
 package it.supermercato24.uppy;
 
 import retrofit2.Retrofit;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Uppy {
 
