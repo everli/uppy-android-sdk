@@ -35,7 +35,7 @@ public class Uppy {
     }
 
     public static void isLatestVersion() {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented Yet");
         // TODO
         // instance.uppyService.checkLatestVersion("", null);
     }
