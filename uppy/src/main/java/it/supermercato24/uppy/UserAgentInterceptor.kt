@@ -14,7 +14,8 @@ class UserAgentInterceptor : Interceptor {
         return chain.proceed(request)
     }
 
-    // Example: android/9/google/pixel 3a
-    fun getUserAgent() = "android/"+ Build.VERSION.RELEASE + Build.MANUFACTURER + "/" + Build.MODEL
+    // Example: Android/9/google/pixel 3a
+    fun getUserAgent() =
+        "Android/" + Build.VERSION.RELEASE + "/" + Build.MANUFACTURER + "/" + Build.MODEL
 
 }
