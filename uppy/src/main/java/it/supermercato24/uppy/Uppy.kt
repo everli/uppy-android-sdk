@@ -9,11 +9,13 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+
 
 object Uppy : UppySdk {
     private lateinit var serverUrl: String
@@ -25,9 +27,19 @@ object Uppy : UppySdk {
     fun init(serverUrl: String) {
         this.serverUrl = serverUrl
 
+        val logging = HttpLoggingInterceptor()
+        val level = if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor.Level.BODY
+        } else {
+            HttpLoggingInterceptor.Level.NONE
+        }
+        logging.level = level
+
         client = OkHttpClient.Builder()
+            .addInterceptor(logging)
             .addInterceptor(UserAgentInterceptor())
             .build()
+
         retrofit = Retrofit.Builder()
             .client(client)
             .addConverterFactory(
@@ -37,6 +49,7 @@ object Uppy : UppySdk {
             )
             .baseUrl(serverUrl)
             .build()
+        
         uppyService = retrofit.create(UppyService::class.java)
     }
 
