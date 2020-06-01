@@ -2,10 +2,7 @@ package it.supermercato24.uppy
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.OnLifecycleEvent
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -49,13 +46,14 @@ object Uppy : UppySdk {
             )
             .baseUrl(serverUrl)
             .build()
-        
+
         uppyService = retrofit.create(UppyService::class.java)
     }
 
     override fun showUpdates(context: Context, lifecycleOwner: LifecycleOwner) {
-        uppyService.checkLatestVersion(context.packageName).enqueue(
-            object : Callback<ApiResponse<UpdateCheck>> {
+        uppyService
+            .checkLatestVersion(context.packageName)
+            .enqueue(object : Callback<ApiResponse<UpdateCheck>> {
                 override fun onFailure(call: Call<ApiResponse<UpdateCheck>>, t: Throwable) {
                     Log.e("Uppy", "Can't fetch updates", t)
                 }
@@ -66,31 +64,9 @@ object Uppy : UppySdk {
                 ) {
                     val updateCheck = response.body()?.data
                     if (response.isSuccessful && updateCheck?.updatesAvailable == true) {
-                        if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                            showUpdateResult(updateCheck, context)
-                        } else {
-                            lifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
-                                @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-                                fun showUpdates() {
-                                    showUpdateResult(updateCheck, context)
-                                }
-                            })
-                        }
+                        ShowUpdateListener(updateCheck, lifecycleOwner.lifecycle, context).showUpdates()
                     }
                 }
             })
     }
-
-    private fun showUpdateResult(
-        updateCheck: UpdateCheck,
-        context: Context
-    ) {
-        if (!updateCheck.forced) {
-            UpdateDialog(context).show()
-        } else {
-            TODO("show forced update activity")
-        }
-    }
-
-
 }
