@@ -1,3 +1,5 @@
 package it.supermercato24.uppy
 
-data class ApiResponse<T>(val data: T)
+import com.squareup.moshi.Json
+
+data class ApiResponse<T>(@field:Json(name = "data") val data: T)
