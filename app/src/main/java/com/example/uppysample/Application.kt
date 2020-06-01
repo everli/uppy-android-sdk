@@ -8,6 +8,6 @@ class Application: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Uppy.init("https://www.example.com")
+        Uppy.init("https://www.example.com/api/")
     }
 }

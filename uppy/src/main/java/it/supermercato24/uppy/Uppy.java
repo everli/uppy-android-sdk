@@ -30,7 +30,7 @@ public class Uppy {
         instance = this;
     }
 
-    public static synchronized void init(String serverUrl) {
+    public static synchronized void getInstance(String serverUrl) {
         if (instance == null) {
             synchronized (Uppy.class) {
                 if (instance == null) {
