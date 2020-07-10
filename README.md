@@ -31,7 +31,7 @@ class Application: Application() {
 #### Check if the installed version is up to date:
 
 ```java
-Uppy.isLatestVersion()
+Uppy.checkForUpdates()
 ```
 
 // TODO all the rest
