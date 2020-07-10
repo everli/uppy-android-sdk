@@ -1,9 +1,9 @@
-package it.supermercato24.uppy
+package it.supermercato24.uppy.model
 
 import com.squareup.moshi.Json
 
 data class UpdateCheck(
-    @Json(name = "updates_available") val updatesAvailable: Boolean,
     @Json(name = "forced") val forced: Boolean,
+    @Json(name = "version") val version: String,
     @Json(name = "download_url") val downloadUrl: String
 )

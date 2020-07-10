@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import it.supermercato24.uppy.model.UpdateCheck
+import it.supermercato24.uppy.update.ForcedUpdateActivity
 import java.lang.ref.WeakReference
 
 class ShowUpdateListener(
@@ -34,9 +36,11 @@ class ShowUpdateListener(
         val context = contextRef.get()
         context?.let {
             if (!updateCheck.forced) {
-                UpdateDialog(context).show()
+                UpdateDialog(context, updateCheck.downloadUrl).show()
             } else {
-                TODO("show forced update activity")
+                context.startActivity(
+                    ForcedUpdateActivity.newIntent(context, updateCheck.downloadUrl)
+                )
             }
         }
     }

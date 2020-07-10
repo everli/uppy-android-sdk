@@ -2,18 +2,18 @@ package it.supermercato24.uppy
 
 import android.app.AlertDialog
 import android.content.Context
+import it.supermercato24.uppy.downloadmanager.BrowserDownloadManager
 
-class UpdateDialog(context: Context) : AlertDialog(context) {
+class UpdateDialog(context: Context, private val downloadUrl: String) : AlertDialog(context) {
     init {
-        // TODO
-        setTitle("Update Available")
-        setMessage("A new version is available, would you like to update?")
-        setButton(BUTTON_POSITIVE, "Update!") { dialog, which ->
-            TODO("not implemented")
+        setTitle(R.string.update_available)
+        setMessage(context.getString(R.string.a_new_version_available))
+        setButton(BUTTON_POSITIVE, context.getString(R.string.update_2)) { _, _ ->
+            BrowserDownloadManager(context).startDownload(downloadUrl)
         }
-        setButton(BUTTON_NEUTRAL, "Later") { dialog, which ->
+        setButton(BUTTON_NEUTRAL, context.getString(R.string.later)) { _, _ ->
             cancel()
         }
-        setCancelable(true)
+        setCancelable(false)
     }
 }
