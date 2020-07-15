@@ -6,4 +6,5 @@
     <string name="update_2">Update!</string>
     <string name="update_url_empty">Update URL empty</string>
     <string name="a_newer_version_available">a newer version of this app is available</string>
+    <string name="downloading_updates">Downloading Updates…</string>
 </resources>
