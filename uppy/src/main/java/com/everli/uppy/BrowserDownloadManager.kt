@@ -1,4 +1,4 @@
-package com.everli.uppy.downloadmanager
+package com.everli.uppy
 
 import android.content.Context
 import android.content.Intent

@@ -1,11 +1,9 @@
 package com.everli.uppy
 
-import android.Manifest
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.util.Log
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.everli.uppy.api.UppyService
 import com.everli.uppy.api.UserAgentInterceptor
@@ -92,25 +90,13 @@ object Uppy : UppySdk {
     private fun getCurrentAppVersion(context: Context): String {
         val pm: PackageManager = context.packageManager
         var pInfo: PackageInfo? = null
+
         try {
             pInfo = pm.getPackageInfo(context.packageName, 0)
-        } catch (e1: PackageManager.NameNotFoundException) {
-            Log.e("Uppy", "Can't find version name", e1)
-
-        }
-        val currentVersion = pInfo!!.versionName
-        return currentVersion
-    }
-
-    fun checkStoragePermission(context: Context): Boolean {
-        val check =
-            ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
-        if (check != PackageManager.PERMISSION_GRANTED) {
-            return false
+        } catch (e: PackageManager.NameNotFoundException) {
+            Log.e("Uppy", "Can't find version name", e)
         }
 
-        return true
+        return pInfo!!.versionName
     }
-
 }

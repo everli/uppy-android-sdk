@@ -1,4 +1,3 @@
 package com.everli.uppy.model
 
-class UpdateError {
-}
+class UpdateError
