@@ -64,9 +64,9 @@ object Uppy : UppySdk {
         )
     }
 
-    override fun checkForUpdates(context: Context, lifecycleOwner: LifecycleOwner) {
+    override fun checkForUpdates(context: Context, slug: String, lifecycleOwner: LifecycleOwner) {
         uppyService
-            .checkLatestVersion(getCurrentAppPackage(context), getCurrentAppVersion(context))
+            .checkLatestVersion(slug, getCurrentAppVersion(context))
             .enqueue(object : Callback<ApiResponse<UpdateCheck>> {
                 override fun onFailure(call: Call<ApiResponse<UpdateCheck>>, t: Throwable) {
                     Log.e("Uppy", "Can't fetch updates", t)
@@ -92,11 +92,12 @@ object Uppy : UppySdk {
 
     override fun checkForUpdates(
         context: Context,
+        slug: String,
         lifecycleOwner: LifecycleOwner,
         callback: UpdateCallback
     ) {
         uppyService
-            .checkLatestVersion(getCurrentAppPackage(context), getCurrentAppVersion(context))
+            .checkLatestVersion(slug, getCurrentAppVersion(context))
             .enqueue(object : Callback<ApiResponse<UpdateCheck>> {
                 override fun onFailure(call: Call<ApiResponse<UpdateCheck>>, t: Throwable) {
                     Log.e("Uppy", "Can't fetch updates", t)
