@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Uppy.checkForUpdates(this, "example-slug", this)
+        Uppy.checkForUpdates(this, this)
     }
 }
 

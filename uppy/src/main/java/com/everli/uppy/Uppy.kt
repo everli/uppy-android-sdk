@@ -1,13 +1,12 @@
 package com.everli.uppy
 
 import android.content.Context
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.everli.uppy.api.UppyService
 import com.everli.uppy.api.UserAgentInterceptor
+import com.everli.uppy.extensions.getCurrentAppVersion
 import com.everli.uppy.model.ApiResponse
 import com.everli.uppy.model.UpdateCheck
 import com.everli.uppy.model.UppyMode
@@ -26,14 +25,18 @@ object Uppy : UppySdk {
     private const val HTTP_CODE = 404
 
     private lateinit var serverUrl: String
+    private lateinit var slug: String
+    private lateinit var cluster: String
 
     private lateinit var client: OkHttpClient
     private lateinit var retrofit: Retrofit
     private lateinit var uppyService: UppyService
     private lateinit var uppyMode: UppyMode
 
-    fun init(serverUrl: String, mode: UppyMode) {
+    fun init(serverUrl: String, slug: String, cluster: String, mode: UppyMode) {
         Uppy.serverUrl = serverUrl
+        Uppy.slug = slug
+        Uppy.cluster = cluster
         uppyMode = mode
 
         val logging = HttpLoggingInterceptor()
@@ -64,9 +67,11 @@ object Uppy : UppySdk {
         )
     }
 
-    override fun checkForUpdates(context: Context, slug: String, lifecycleOwner: LifecycleOwner) {
+    override fun checkForUpdates(
+        context: Context, lifecycleOwner: LifecycleOwner
+    ) {
         uppyService
-            .checkLatestVersion(slug, getCurrentAppVersion(context))
+            .checkLatestVersion(slug, cluster, context.packageManager.getCurrentAppVersion(context))
             .enqueue(object : Callback<ApiResponse<UpdateCheck>> {
                 override fun onFailure(call: Call<ApiResponse<UpdateCheck>>, t: Throwable) {
                     Log.e("Uppy", "Can't fetch updates", t)
@@ -92,12 +97,11 @@ object Uppy : UppySdk {
 
     override fun checkForUpdates(
         context: Context,
-        slug: String,
         lifecycleOwner: LifecycleOwner,
         callback: UpdateCallback
     ) {
         uppyService
-            .checkLatestVersion(slug, getCurrentAppVersion(context))
+            .checkLatestVersion(slug, cluster, context.packageManager.getCurrentAppVersion(context))
             .enqueue(object : Callback<ApiResponse<UpdateCheck>> {
                 override fun onFailure(call: Call<ApiResponse<UpdateCheck>>, t: Throwable) {
                     Log.e("Uppy", "Can't fetch updates", t)
@@ -128,32 +132,5 @@ object Uppy : UppySdk {
                 }
             })
     }
-
-    private fun getCurrentAppVersion(context: Context): String {
-        val pm: PackageManager = context.packageManager
-        var pInfo: PackageInfo? = null
-
-        try {
-            pInfo = pm.getPackageInfo(context.packageName, 0)
-        } catch (e: PackageManager.NameNotFoundException) {
-            Log.e("Uppy", "Can't find package name", e)
-        }
-
-        return pInfo?.versionName
-            ?: throw PackageManager.NameNotFoundException("Can't find version name")
-    }
-
-    private fun getCurrentAppPackage(context: Context): String {
-        val pm: PackageManager = context.packageManager
-        var pInfo: PackageInfo? = null
-
-        try {
-            pInfo = pm.getPackageInfo(context.packageName, 0)
-        } catch (e: PackageManager.NameNotFoundException) {
-            Log.e("Uppy", "Can't find package name", e)
-        }
-
-        return pInfo?.packageName
-            ?: throw PackageManager.NameNotFoundException("Can't find package name")
-    }
 }
+
