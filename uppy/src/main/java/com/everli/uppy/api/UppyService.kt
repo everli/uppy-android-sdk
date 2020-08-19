@@ -7,6 +7,10 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface UppyService {
-    @GET("v1/applications/shopper-app/updates/Android/{version}")
-    fun checkLatestVersion(@Path("version") currentAppVersion: String): Call<ApiResponse<UpdateCheck>>
+    @GET("v1/applications/{slug}/updates/Android/{version}+{cluster}")
+    fun checkLatestVersion(
+        @Path("slug") slug: String,
+        @Path("cluster") cluster: String,
+        @Path("version") currentAppVersion: String
+    ): Call<ApiResponse<UpdateCheck>>
 }

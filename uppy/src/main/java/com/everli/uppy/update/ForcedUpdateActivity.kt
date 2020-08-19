@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.everli.uppy.BrowserDownloadManager
 import it.everli.uppy.R
-import com.everli.uppy.downloadmanager.BrowserDownloadManager
 
 class ForcedUpdateActivity : AppCompatActivity() {
 
@@ -32,7 +32,6 @@ class ForcedUpdateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forced_update)
 
-        val intent = intent
         downloadUrl = intent.getStringExtra(EXTRA_DOWNLOAD_URL)
 
         setListeners()
@@ -42,7 +41,7 @@ class ForcedUpdateActivity : AppCompatActivity() {
         findViewById<Button>(R.id.update).setOnClickListener {
             downloadUrl?.let {
                 BrowserDownloadManager(this).startDownload(it)
-            } ?: Toast.makeText(this, R.string.update_url_empty, Toast.LENGTH_LONG).show()
+            } ?: Toast.makeText(this, R.string.forced_update_url_empty, Toast.LENGTH_LONG).show()
         }
     }
 }

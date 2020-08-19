@@ -1,14 +1,12 @@
 package com.everli.uppy
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.util.Log
-import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.everli.uppy.api.UppyService
 import com.everli.uppy.api.UserAgentInterceptor
+import com.everli.uppy.extensions.getCurrentAppVersion
 import com.everli.uppy.model.ApiResponse
 import com.everli.uppy.model.UpdateCheck
 import com.everli.uppy.model.UppyMode
@@ -24,15 +22,21 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 object Uppy : UppySdk {
+    private const val HTTP_CODE = 404
+
     private lateinit var serverUrl: String
+    private lateinit var slug: String
+    private lateinit var cluster: String
 
     private lateinit var client: OkHttpClient
     private lateinit var retrofit: Retrofit
     private lateinit var uppyService: UppyService
     private lateinit var uppyMode: UppyMode
 
-    fun init(serverUrl: String, mode: UppyMode) {
+    fun init(serverUrl: String, slug: String, cluster: String, mode: UppyMode) {
         Uppy.serverUrl = serverUrl
+        Uppy.slug = slug
+        Uppy.cluster = cluster
         uppyMode = mode
 
         val logging = HttpLoggingInterceptor()
@@ -63,9 +67,11 @@ object Uppy : UppySdk {
         )
     }
 
-    override fun checkForUpdates(context: Context, lifecycleOwner: LifecycleOwner) {
+    override fun checkForUpdates(
+        context: Context, lifecycleOwner: LifecycleOwner
+    ) {
         uppyService
-            .checkLatestVersion(getCurrentAppVersion(context))
+            .checkLatestVersion(slug, cluster, context.packageManager.getCurrentAppVersion(context))
             .enqueue(object : Callback<ApiResponse<UpdateCheck>> {
                 override fun onFailure(call: Call<ApiResponse<UpdateCheck>>, t: Throwable) {
                     Log.e("Uppy", "Can't fetch updates", t)
@@ -89,28 +95,42 @@ object Uppy : UppySdk {
             })
     }
 
-    private fun getCurrentAppVersion(context: Context): String {
-        val pm: PackageManager = context.packageManager
-        var pInfo: PackageInfo? = null
-        try {
-            pInfo = pm.getPackageInfo(context.packageName, 0)
-        } catch (e1: PackageManager.NameNotFoundException) {
-            Log.e("Uppy", "Can't find version name", e1)
+    override fun checkForUpdates(
+        context: Context,
+        lifecycleOwner: LifecycleOwner,
+        callback: UpdateCallback
+    ) {
+        uppyService
+            .checkLatestVersion(slug, cluster, context.packageManager.getCurrentAppVersion(context))
+            .enqueue(object : Callback<ApiResponse<UpdateCheck>> {
+                override fun onFailure(call: Call<ApiResponse<UpdateCheck>>, t: Throwable) {
+                    Log.e("Uppy", "Can't fetch updates", t)
 
-        }
-        val currentVersion = pInfo!!.versionName
-        return currentVersion
+                    if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                        callback.onFailure(t)
+                    }
+                }
+
+                override fun onResponse(
+                    call: Call<ApiResponse<UpdateCheck>>,
+                    response: Response<ApiResponse<UpdateCheck>>
+                ) {
+                    val updateCheck = response.body()?.data
+                    if (response.isSuccessful) {
+                        updateCheck?.let {
+                            CustomUpdateListener(
+                                it,
+                                lifecycleOwner.lifecycle,
+                                callback
+                            ).showUpdates()
+                        }
+                    } else if (response.code() == HTTP_CODE) {
+                        if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                            callback.onNoUpdate("No updates available")
+                        }
+                    }
+                }
+            })
     }
-
-    fun checkStoragePermission(context: Context): Boolean {
-        val check =
-            ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
-        if (check != PackageManager.PERMISSION_GRANTED) {
-            return false
-        }
-
-        return true
-    }
-
 }
+
