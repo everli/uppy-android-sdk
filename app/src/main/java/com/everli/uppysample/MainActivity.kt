@@ -1,8 +1,8 @@
-package com.example.uppysample
+package com.everli.uppysample
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import it.supermercato24.uppy.Uppy
+import com.everli.uppy.Uppy
 
 class MainActivity : AppCompatActivity() {
 
@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Uppy.showUpdates(this, this)
+        Uppy.checkForUpdates(this, this)
     }
 }
 

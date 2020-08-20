@@ -1,4 +1,4 @@
-package it.supermercato24.uppy
+package com.everli.uppy.model
 
 import com.squareup.moshi.Json
 

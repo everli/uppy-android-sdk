@@ -1,4 +1,4 @@
-package com.example.uppysample
+package com.everli.uppysample
 
 import org.junit.Test
 

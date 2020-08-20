@@ -1,4 +1,4 @@
-package it.supermercato24.uppy
+package com.everli.uppy.api
 
 import android.os.Build
 import okhttp3.Interceptor
@@ -14,8 +14,11 @@ class UserAgentInterceptor : Interceptor {
         return chain.proceed(request)
     }
 
-    // Example: Android/9/google/pixel 3a
-    fun getUserAgent() =
+    /**
+     * Returns the User-Agent in the form Android/<release_no>/<manufacturer>/<device_model>
+     * Example: "Android/9/google/pixel 3a"
+     */
+    private fun getUserAgent() =
         "Android/" + Build.VERSION.RELEASE + "/" + Build.MANUFACTURER + "/" + Build.MODEL
 
 }
