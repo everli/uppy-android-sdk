@@ -1,6 +1,7 @@
 package com.everli.uppy
 
 import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -38,9 +39,9 @@ class ShowUpdateListener(
             if (!updateCheck.forced) {
                 UpdateDialog(context, updateCheck.downloadUrl).show()
             } else {
-                context.startActivity(
-                    ForcedUpdateActivity.newIntent(context, updateCheck.downloadUrl)
-                )
+                val intent = ForcedUpdateActivity.newIntent(context, updateCheck.downloadUrl)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(intent)
             }
         }
     }
