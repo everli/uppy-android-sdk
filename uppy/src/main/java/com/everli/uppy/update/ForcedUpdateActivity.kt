@@ -37,6 +37,11 @@ class ForcedUpdateActivity : AppCompatActivity() {
         setListeners()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
+
     private fun setListeners() {
         findViewById<Button>(R.id.update).setOnClickListener {
             downloadUrl?.let {
