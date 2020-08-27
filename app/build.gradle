@@ -40,6 +40,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    // include uppy
-    implementation project(':uppy')
+    // include Uppy Android SDK
+    implementation 'com.github.everli:uppy-android-sdk:0.0.1'
 }
