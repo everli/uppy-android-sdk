@@ -23,7 +23,7 @@ Add the following dependency to your app gradle file:
 
   ```groovy
     dependencies {
-      implementation 'com.github.everli:uppy-android-sdk:0.0.1'
+      implementation 'com.github.everli:uppy-android-sdk:Tag'
     }
   ```
 
