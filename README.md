@@ -50,7 +50,7 @@ class Application: Application() {
         super.onCreate()
 
 
-        Uppy.init("https://www.example.com/api/", "example-slug", "cluster", mode)
+        Uppy.init("https://www.example.com/api/", "example-slug", mode)
     }
 }
 

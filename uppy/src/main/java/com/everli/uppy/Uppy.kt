@@ -26,17 +26,15 @@ object Uppy : UppySdk {
 
     private lateinit var serverUrl: String
     private lateinit var slug: String
-    private lateinit var cluster: String
 
     private lateinit var client: OkHttpClient
     private lateinit var retrofit: Retrofit
     private lateinit var uppyService: UppyService
     private lateinit var uppyMode: UppyMode
 
-    fun init(serverUrl: String, slug: String, cluster: String, mode: UppyMode) {
+    fun init(serverUrl: String, slug: String, mode: UppyMode) {
         Uppy.serverUrl = serverUrl
         Uppy.slug = slug
-        Uppy.cluster = cluster
         uppyMode = mode
 
         val logging = HttpLoggingInterceptor()
@@ -71,7 +69,7 @@ object Uppy : UppySdk {
         context: Context, lifecycleOwner: LifecycleOwner
     ) {
         uppyService
-            .checkLatestVersion(slug, cluster, context.packageManager.getCurrentAppVersion(context))
+            .checkLatestVersion(slug, context.packageManager.getCurrentAppVersion(context))
             .enqueue(object : Callback<ApiResponse<UpdateCheck>> {
                 override fun onFailure(call: Call<ApiResponse<UpdateCheck>>, t: Throwable) {
                     Log.e("Uppy", "Can't fetch updates", t)
@@ -101,7 +99,7 @@ object Uppy : UppySdk {
         callback: UpdateCallback
     ) {
         uppyService
-            .checkLatestVersion(slug, cluster, context.packageManager.getCurrentAppVersion(context))
+            .checkLatestVersion(slug, context.packageManager.getCurrentAppVersion(context))
             .enqueue(object : Callback<ApiResponse<UpdateCheck>> {
                 override fun onFailure(call: Call<ApiResponse<UpdateCheck>>, t: Throwable) {
                     Log.e("Uppy", "Can't fetch updates", t)
