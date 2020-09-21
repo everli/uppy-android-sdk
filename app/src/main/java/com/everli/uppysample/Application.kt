@@ -9,6 +9,6 @@ class Application: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Uppy.init("https://www.example.com/api/", "example-slug", "cluster", UppyMode.DEFAULT)
+        Uppy.init("https://www.example.com/api/", "example-slug", UppyMode.DEFAULT)
     }
 }
