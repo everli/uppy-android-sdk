@@ -88,3 +88,5 @@ lint/tmp/
 
 # OSX
 .DS_Store
+
+.idea/jarRepositories.xml

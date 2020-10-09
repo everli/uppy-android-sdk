@@ -9,7 +9,6 @@ import com.everli.uppy.api.UserAgentInterceptor
 import com.everli.uppy.extensions.getCurrentAppVersion
 import com.everli.uppy.model.ApiResponse
 import com.everli.uppy.model.UpdateCheck
-import com.everli.uppy.model.UppyMode
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import it.everli.uppy.BuildConfig
@@ -30,12 +29,10 @@ object Uppy : UppySdk {
     private lateinit var client: OkHttpClient
     private lateinit var retrofit: Retrofit
     private lateinit var uppyService: UppyService
-    private lateinit var uppyMode: UppyMode
 
-    fun init(serverUrl: String, slug: String, mode: UppyMode) {
+    fun init(serverUrl: String, slug: String) {
         Uppy.serverUrl = serverUrl
         Uppy.slug = slug
-        uppyMode = mode
 
         val logging = HttpLoggingInterceptor()
         val level = if (BuildConfig.DEBUG) {
