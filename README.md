@@ -62,7 +62,7 @@ class Application: Application() {
 ```kotlin
     Uppy.checkForUpdates(context, lifecycleOwner)
 ```
-This function should be called at all possible entry points to your application. A common solution is to call it from a base `BaseActivity` or `BaseFragment`. This mode is used to show the in-built view elements of the Uppy SDK for Android.
+This function should be called at all possible entry points to your application. A common solution is to call it from a base `BaseActivity` or `BaseFragment`. When calling this method in-built view elements of the Uppy SDK for Android are shown.
 
 A callback variant of the function above also exists.
 
@@ -70,6 +70,6 @@ A callback variant of the function above also exists.
     Uppy.checkForUpdates(context, lifecycleOwner, callback)
 ```
 
-This function should also be called at all possible entry points to your application. A common solution is to call it from a base `BaseActivity` or `BaseFragment`. This mode is used to present customized views and dialogs.
+This function should also be called at all possible entry points to your application. A common solution is to call it from a base `BaseActivity` or `BaseFragment`. When calling this method customized views and dialogs are shown.
 
 
