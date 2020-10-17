@@ -40,6 +40,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    // include Uppy Android SDK
-    implementation 'com.github.everli:uppy-android-sdk:0.0.1'
+    // In your project add Uppy SDK by doing:
+    // implementation 'com.github.everli:uppy-android-sdk:latest_tag'
+    // where latest tag is the latest version of uppy
+
+    // here instead, we load Uppy Android SDK as a local module
+    implementation project(path: ':uppy')
 }
