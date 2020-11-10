@@ -57,6 +57,22 @@ class Application: Application() {
 * **slug**: The unique identifier for updates to your application.
 * **cluster**: The unique cluster group within the slug of your application for updates. e.g. "beta", "alpha", "country" etc.
 
+From version `0.0.4` you can also have a way to track the number of installations for each version of an application. 
+To enable this feature you need to pass a unique `deviceId` of the single installation, to the Uppy init method:
+
+```kotlin
+
+class Application: Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+
+        Uppy.init("https://www.example.com/api/", "example-slug", "your-unique-installation-identifier")
+    }
+}
+
+```
+
 #### Check if the installed app version is up to date:
 
 ```kotlin
