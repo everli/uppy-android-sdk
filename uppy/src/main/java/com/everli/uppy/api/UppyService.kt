@@ -1,15 +1,17 @@
 package com.everli.uppy.api
 
+import com.everli.uppy.api.requests.CheckForUpdatesRequest
 import com.everli.uppy.model.ApiResponse
 import com.everli.uppy.model.UpdateCheck
 import retrofit2.Call
-import retrofit2.http.GET
+import retrofit2.http.Body
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface UppyService {
-    @GET("v1/applications/{slug}/updates/Android/{version}")
+    @POST("v2/applications/{slug}/updates/Android")
     fun checkLatestVersion(
         @Path("slug") slug: String,
-        @Path("version") currentAppVersion: String
+        @Body checkForUpdatesRequest: CheckForUpdatesRequest
     ): Call<ApiResponse<UpdateCheck>>
 }

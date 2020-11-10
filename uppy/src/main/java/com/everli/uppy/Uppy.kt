@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.everli.uppy.api.UppyService
 import com.everli.uppy.api.UserAgentInterceptor
+import com.everli.uppy.api.requests.CheckForUpdatesRequest
 import com.everli.uppy.extensions.getCurrentAppVersion
 import com.everli.uppy.model.ApiResponse
 import com.everli.uppy.model.UpdateCheck
@@ -30,9 +31,12 @@ object Uppy : UppySdk {
     private lateinit var retrofit: Retrofit
     private lateinit var uppyService: UppyService
 
-    fun init(serverUrl: String, slug: String) {
+    private var deviceId: String? = null
+
+    fun init(serverUrl: String, slug: String, deviceId: String? = null) {
         Uppy.serverUrl = serverUrl
         Uppy.slug = slug
+        Uppy.deviceId = deviceId
 
         val logging = HttpLoggingInterceptor()
         val level = if (BuildConfig.DEBUG) {
@@ -65,8 +69,10 @@ object Uppy : UppySdk {
     override fun checkForUpdates(
         context: Context, lifecycleOwner: LifecycleOwner
     ) {
+        val updateRequest = CheckForUpdatesRequest(context.packageManager.getCurrentAppVersion(context), deviceId)
+
         uppyService
-            .checkLatestVersion(slug, context.packageManager.getCurrentAppVersion(context))
+            .checkLatestVersion(slug, updateRequest)
             .enqueue(object : Callback<ApiResponse<UpdateCheck>> {
                 override fun onFailure(call: Call<ApiResponse<UpdateCheck>>, t: Throwable) {
                     Log.e("Uppy", "Can't fetch updates", t)
@@ -95,8 +101,10 @@ object Uppy : UppySdk {
         lifecycleOwner: LifecycleOwner,
         callback: UpdateCallback
     ) {
+        val updateRequest = CheckForUpdatesRequest(context.packageManager.getCurrentAppVersion(context), deviceId)
+
         uppyService
-            .checkLatestVersion(slug, context.packageManager.getCurrentAppVersion(context))
+            .checkLatestVersion(slug, updateRequest)
             .enqueue(object : Callback<ApiResponse<UpdateCheck>> {
                 override fun onFailure(call: Call<ApiResponse<UpdateCheck>>, t: Throwable) {
                     Log.e("Uppy", "Can't fetch updates", t)
