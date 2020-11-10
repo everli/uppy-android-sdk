@@ -55,7 +55,23 @@ class Application: Application() {
 ```
 
 * **slug**: The unique identifier for updates to your application.
-* **cluster**: The unique cluster group within the slug of your application for updates. e.g. "beta", "alpha", "country" etc.
+
+#### Check if the installed app version is up to date:
+
+```kotlin
+    Uppy.checkForUpdates(context, lifecycleOwner)
+```
+This function should be called at all possible entry points to your application. A common solution is to call it from a base `BaseActivity` or `BaseFragment`. When calling this method in-built view elements of the Uppy SDK for Android are shown.
+
+A callback variant of the function above also exists.
+
+```kotlin
+    Uppy.checkForUpdates(context, lifecycleOwner, callback)
+```
+
+This function should also be called at all possible entry points to your application. A common solution is to call it from a base `BaseActivity` or `BaseFragment`. When calling this method customized views and dialogs are shown.
+
+## Device installation tracking
 
 From version `0.0.4` you can also have a way to track the number of installations for each version of an application. 
 To enable this feature you need to pass a unique `deviceId` of the single installation, to the Uppy init method:
@@ -72,20 +88,5 @@ class Application: Application() {
 }
 
 ```
-
-#### Check if the installed app version is up to date:
-
-```kotlin
-    Uppy.checkForUpdates(context, lifecycleOwner)
-```
-This function should be called at all possible entry points to your application. A common solution is to call it from a base `BaseActivity` or `BaseFragment`. When calling this method in-built view elements of the Uppy SDK for Android are shown.
-
-A callback variant of the function above also exists.
-
-```kotlin
-    Uppy.checkForUpdates(context, lifecycleOwner, callback)
-```
-
-This function should also be called at all possible entry points to your application. A common solution is to call it from a base `BaseActivity` or `BaseFragment`. When calling this method customized views and dialogs are shown.
 
 
