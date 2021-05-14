@@ -32,11 +32,24 @@ object Uppy : UppySdk {
     private lateinit var uppyService: UppyService
 
     private var deviceId: String? = null
+    private var forcedTitle: Int? = null
+    private var title: Int? = null
+    private var message: Int? = null
 
-    fun init(serverUrl: String, slug: String, deviceId: String? = null) {
+    fun init(
+        serverUrl: String,
+        slug: String,
+        deviceId: String? = null,
+        forcedTitle: Int? = null,
+        title: Int? = null,
+        message: Int? = null
+    ) {
         Uppy.serverUrl = serverUrl
         Uppy.slug = slug
         Uppy.deviceId = deviceId
+        Uppy.title = title
+        Uppy.message = message
+        Uppy.forcedTitle = forcedTitle
 
         val logging = HttpLoggingInterceptor()
         val level = if (BuildConfig.DEBUG) {
@@ -44,6 +57,7 @@ object Uppy : UppySdk {
         } else {
             HttpLoggingInterceptor.Level.NONE
         }
+
         logging.level = level
 
         client = OkHttpClient.Builder()
@@ -69,7 +83,8 @@ object Uppy : UppySdk {
     override fun checkForUpdates(
         context: Context, lifecycleOwner: LifecycleOwner
     ) {
-        val updateRequest = CheckForUpdatesRequest(context.packageManager.getCurrentAppVersion(context), deviceId)
+        val updateRequest =
+            CheckForUpdatesRequest(context.packageManager.getCurrentAppVersion(context), deviceId)
 
         uppyService
             .checkLatestVersion(slug, updateRequest)
@@ -88,7 +103,10 @@ object Uppy : UppySdk {
                             ShowUpdateListener(
                                 it,
                                 lifecycleOwner.lifecycle,
-                                context
+                                context,
+                                title,
+                                message,
+                                forcedTitle
                             ).showUpdates()
                         }
                     }
@@ -101,7 +119,8 @@ object Uppy : UppySdk {
         lifecycleOwner: LifecycleOwner,
         callback: UpdateCallback
     ) {
-        val updateRequest = CheckForUpdatesRequest(context.packageManager.getCurrentAppVersion(context), deviceId)
+        val updateRequest =
+            CheckForUpdatesRequest(context.packageManager.getCurrentAppVersion(context), deviceId)
 
         uppyService
             .checkLatestVersion(slug, updateRequest)

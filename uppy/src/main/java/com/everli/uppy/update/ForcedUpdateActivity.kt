@@ -8,31 +8,46 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.everli.uppy.BrowserDownloadManager
 import it.everli.uppy.R
+import it.everli.uppy.databinding.ActivityForcedUpdateBinding
 
 class ForcedUpdateActivity : AppCompatActivity() {
 
     companion object {
         private const val EXTRA_DOWNLOAD_URL = "ForcedUpdateActivity.Extra.downloadUrl"
+        private const val EXTRA_TITLE = "ForcedUpdateActivity.Extra.title"
 
         @JvmStatic
-        fun newIntent(context: Context, downloadUrl: String): Intent {
+        fun newIntent(context: Context, downloadUrl: String, forcedTitle: Int?): Intent {
             val intent = Intent(context, ForcedUpdateActivity::class.java)
             val extras = Bundle()
 
             extras.putString(EXTRA_DOWNLOAD_URL, downloadUrl)
+
+            forcedTitle?.let { extras.putInt(EXTRA_TITLE, it) }
+
             intent.putExtras(extras)
 
             return intent
         }
     }
 
+    private lateinit var binding: ActivityForcedUpdateBinding
+
     private var downloadUrl: String? = null
+    private var titleResourceId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_forced_update)
+        binding = ActivityForcedUpdateBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         downloadUrl = intent.getStringExtra(EXTRA_DOWNLOAD_URL)
+        titleResourceId = intent.getIntExtra(EXTRA_TITLE, -1)
+
+        if (titleResourceId > 0) {
+            binding.message.text = getString(titleResourceId)
+        }
 
         setListeners()
     }

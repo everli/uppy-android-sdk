@@ -12,7 +12,10 @@ import java.lang.ref.WeakReference
 class ShowUpdateListener(
     private val updateCheck: UpdateCheck,
     lifecycle: Lifecycle,
-    context: Context
+    context: Context,
+    private val title: Int?,
+    private val message: Int?,
+    private val forcedTitle: Int?
 ) : UpdateListener, LifecycleObserver {
 
     private val lifecycleRef: WeakReference<Lifecycle> = WeakReference(lifecycle)
@@ -20,6 +23,7 @@ class ShowUpdateListener(
 
     override fun showUpdates() {
         val lifecycle = lifecycleRef.get()
+
         if (lifecycle?.currentState?.isAtLeast(Lifecycle.State.RESUMED) == true) {
             showUpdateResult()
         } else {
@@ -33,16 +37,24 @@ class ShowUpdateListener(
         lifecycleRef.get()?.removeObserver(this)
     }
 
-    private fun showUpdateResult() {
-        val context = contextRef.get()
-        context?.let {
-            if (!updateCheck.forced) {
-                UpdateDialog(context, updateCheck.downloadUrl).show()
-            } else {
-                val intent = ForcedUpdateActivity.newIntent(context, updateCheck.downloadUrl)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                context.startActivity(intent)
-            }
+    private fun showUpdateResult() = contextRef.get()?.let {
+        if (!updateCheck.forced) {
+            UpdateDialog(
+                it,
+                updateCheck.downloadUrl,
+                title,
+                message
+            ).show()
+        } else {
+            val intent = ForcedUpdateActivity.newIntent(
+                it,
+                updateCheck.downloadUrl,
+                forcedTitle
+            )
+
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            it.startActivity(intent)
         }
     }
 }
