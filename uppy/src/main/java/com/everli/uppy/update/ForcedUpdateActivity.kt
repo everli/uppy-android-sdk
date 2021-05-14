@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.everli.uppy.BrowserDownloadManager
 import it.everli.uppy.R
+import it.everli.uppy.databinding.ActivityForcedUpdateBinding
 
 class ForcedUpdateActivity : AppCompatActivity() {
 
@@ -20,17 +21,22 @@ class ForcedUpdateActivity : AppCompatActivity() {
             val extras = Bundle()
 
             extras.putString(EXTRA_DOWNLOAD_URL, downloadUrl)
+
             intent.putExtras(extras)
 
             return intent
         }
     }
 
+    private lateinit var binding: ActivityForcedUpdateBinding
+
     private var downloadUrl: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_forced_update)
+        binding = ActivityForcedUpdateBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         downloadUrl = intent.getStringExtra(EXTRA_DOWNLOAD_URL)
 
@@ -46,7 +52,7 @@ class ForcedUpdateActivity : AppCompatActivity() {
         findViewById<Button>(R.id.update).setOnClickListener {
             downloadUrl?.let {
                 BrowserDownloadManager(this).startDownload(it)
-            } ?: Toast.makeText(this, R.string.forced_update_url_empty, Toast.LENGTH_LONG).show()
+            } ?: Toast.makeText(this, R.string.uppy_forced_update_url_empty, Toast.LENGTH_LONG).show()
         }
     }
 }

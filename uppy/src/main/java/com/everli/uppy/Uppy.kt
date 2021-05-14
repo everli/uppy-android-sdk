@@ -33,7 +33,11 @@ object Uppy : UppySdk {
 
     private var deviceId: String? = null
 
-    fun init(serverUrl: String, slug: String, deviceId: String? = null) {
+    fun init(
+        serverUrl: String,
+        slug: String,
+        deviceId: String? = null
+    ) {
         Uppy.serverUrl = serverUrl
         Uppy.slug = slug
         Uppy.deviceId = deviceId
@@ -44,6 +48,7 @@ object Uppy : UppySdk {
         } else {
             HttpLoggingInterceptor.Level.NONE
         }
+
         logging.level = level
 
         client = OkHttpClient.Builder()
@@ -69,7 +74,8 @@ object Uppy : UppySdk {
     override fun checkForUpdates(
         context: Context, lifecycleOwner: LifecycleOwner
     ) {
-        val updateRequest = CheckForUpdatesRequest(context.packageManager.getCurrentAppVersion(context), deviceId)
+        val updateRequest =
+            CheckForUpdatesRequest(context.packageManager.getCurrentAppVersion(context), deviceId)
 
         uppyService
             .checkLatestVersion(slug, updateRequest)
@@ -101,7 +107,8 @@ object Uppy : UppySdk {
         lifecycleOwner: LifecycleOwner,
         callback: UpdateCallback
     ) {
-        val updateRequest = CheckForUpdatesRequest(context.packageManager.getCurrentAppVersion(context), deviceId)
+        val updateRequest =
+            CheckForUpdatesRequest(context.packageManager.getCurrentAppVersion(context), deviceId)
 
         uppyService
             .checkLatestVersion(slug, updateRequest)

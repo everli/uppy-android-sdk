@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">UppySample</string>
+    <string name="message">Sample update required text Description</string>
+    <string name="title">Sample update required title</string>
+    <string name="forcedTitle">Forced update required title</string>
+
+<!--  Bellow here we can find some examples about how to customize the texts in your app,
+        just place any of these strings in you app's strings.xml   -->
+    
+<!--    <string name="uppy_forced_newer_version_available">Ops, la versione dell\'app è vecchia. Aggiornala per continuare ad utilizzarla correttamente!</string>-->
+<!--    <string name="uppy_update_dialog_title">Update Available</string>-->
+<!--    <string name="uppy_update_dialog_message">Una nuova versione della shopper app è disponibile. vuoi scaricarla?</string>-->
+<!--    <string name="uppy_update_button">Aggiorna</string>-->
+<!--    <string name="uppy_update_dialog_later">Dopo</string>-->
 </resources>
