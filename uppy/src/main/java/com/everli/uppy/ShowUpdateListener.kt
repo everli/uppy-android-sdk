@@ -12,10 +12,7 @@ import java.lang.ref.WeakReference
 class ShowUpdateListener(
     private val updateCheck: UpdateCheck,
     lifecycle: Lifecycle,
-    context: Context,
-    private val title: Int?,
-    private val message: Int?,
-    private val forcedTitle: Int?
+    context: Context
 ) : UpdateListener, LifecycleObserver {
 
     private val lifecycleRef: WeakReference<Lifecycle> = WeakReference(lifecycle)
@@ -41,15 +38,12 @@ class ShowUpdateListener(
         if (!updateCheck.forced) {
             UpdateDialog(
                 it,
-                updateCheck.downloadUrl,
-                title,
-                message
+                updateCheck.downloadUrl
             ).show()
         } else {
             val intent = ForcedUpdateActivity.newIntent(
                 it,
-                updateCheck.downloadUrl,
-                forcedTitle
+                updateCheck.downloadUrl
             )
 
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)

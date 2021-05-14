@@ -3,4 +3,8 @@
     <string name="message">Sample update required text Description</string>
     <string name="title">Sample update required title</string>
     <string name="forcedTitle">Forced update required title</string>
+
+    <string name="forced_newer_version_available">Custom forced update required title</string>
+    <string name="dialog_update_available">Custom title</string>
+    <string name="dialog_new_version_available">Custom description a new version is available, would you like to update?</string>
 </resources>

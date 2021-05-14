@@ -10,10 +10,7 @@ class Application : Application() {
 
         Uppy.init(
             "https://www.example.com/api/",
-            "example-slug",
-            forcedTitle = R.string.forcedTitle,
-            title = R.string.title,
-            message = R.string.message
+            "example-slug"
         )
 
         // if you want to track installations, provide a unique device id

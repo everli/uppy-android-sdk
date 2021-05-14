@@ -32,24 +32,15 @@ object Uppy : UppySdk {
     private lateinit var uppyService: UppyService
 
     private var deviceId: String? = null
-    private var forcedTitle: Int? = null
-    private var title: Int? = null
-    private var message: Int? = null
 
     fun init(
         serverUrl: String,
         slug: String,
-        deviceId: String? = null,
-        forcedTitle: Int? = null,
-        title: Int? = null,
-        message: Int? = null
+        deviceId: String? = null
     ) {
         Uppy.serverUrl = serverUrl
         Uppy.slug = slug
         Uppy.deviceId = deviceId
-        Uppy.title = title
-        Uppy.message = message
-        Uppy.forcedTitle = forcedTitle
 
         val logging = HttpLoggingInterceptor()
         val level = if (BuildConfig.DEBUG) {
@@ -103,10 +94,7 @@ object Uppy : UppySdk {
                             ShowUpdateListener(
                                 it,
                                 lifecycleOwner.lifecycle,
-                                context,
-                                title,
-                                message,
-                                forcedTitle
+                                context
                             ).showUpdates()
                         }
                     }
