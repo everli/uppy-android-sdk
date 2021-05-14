@@ -52,7 +52,7 @@ class ForcedUpdateActivity : AppCompatActivity() {
         findViewById<Button>(R.id.update).setOnClickListener {
             downloadUrl?.let {
                 BrowserDownloadManager(this).startDownload(it)
-            } ?: Toast.makeText(this, R.string.forced_update_url_empty, Toast.LENGTH_LONG).show()
+            } ?: Toast.makeText(this, R.string.uppy_forced_update_url_empty, Toast.LENGTH_LONG).show()
         }
     }
 }

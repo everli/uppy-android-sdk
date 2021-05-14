@@ -4,7 +4,9 @@
     <string name="title">Sample update required title</string>
     <string name="forcedTitle">Forced update required title</string>
 
-    <string name="forced_newer_version_available">Custom forced update required title</string>
-    <string name="dialog_update_available">Custom title</string>
-    <string name="dialog_new_version_available">Custom description a new version is available, would you like to update?</string>
+    <string name="uppy_forced_newer_version_available">Ops, la versione dell\'app è vecchia. Aggiornala per continuare ad utilizzarla correttamente!</string>
+    <string name="uppy_update_dialog_title">Update Available</string>
+    <string name="uppy_update_dialog_message">Una nuova versione della shopper app è disponibile. vuoi scaricarla?</string>
+    <string name="uppy_update_button">Aggiorna</string>
+    <string name="uppy_update_dialog_later">Dopo</string>
 </resources>

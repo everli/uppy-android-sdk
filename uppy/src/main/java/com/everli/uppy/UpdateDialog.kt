@@ -10,14 +10,14 @@ class UpdateDialog(
 ) : AlertDialog(context) {
 
     init {
-        setTitle(R.string.dialog_update_available)
-        setMessage(context.getString(R.string.dialog_new_version_available))
+        setTitle(R.string.uppy_update_dialog_title)
+        setMessage(context.getString(R.string.uppy_update_dialog_message))
 
-        setButton(BUTTON_POSITIVE, context.getString(R.string.update)) { _, _ ->
+        setButton(BUTTON_POSITIVE, context.getString(R.string.uppy_update_button)) { _, _ ->
             BrowserDownloadManager(context).startDownload(downloadUrl)
         }
 
-        setButton(BUTTON_NEUTRAL, context.getString(R.string.dialog_later)) { _, _ ->
+        setButton(BUTTON_NEUTRAL, context.getString(R.string.uppy_update_dialog_later)) { _, _ ->
             cancel()
         }
 

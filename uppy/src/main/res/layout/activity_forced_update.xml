@@ -13,14 +13,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
-            android:text="@string/forced_newer_version_available" />
+            android:textAlignment="center"
+            android:layout_margin="40dp"
+            android:text="@string/uppy_forced_newer_version_available" />
 
         <Button
             android:id="@+id/update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/update" />
+            android:paddingHorizontal="24dp"
+            android:text="@string/uppy_update_button" />
     </FrameLayout>
 </layout>
