@@ -11,7 +11,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 29
         versionCode 4
-        versionName "0.0.4"
+        versionName "0.0.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -24,6 +24,11 @@ android {
         }
     }
 
+    buildFeatures.dataBinding = true
+
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
